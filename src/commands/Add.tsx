@@ -18,19 +18,11 @@ ${message}
 `;
 }
 
-async function ensureDirectory(dir: string): Promise<void> {
-	try {
-		await access(dir);
-	} catch {
-		await mkdir(dir, { recursive: true });
-	}
-}
-
 async function addFile(contents: string): Promise<void> {
 	const dir = await getRootDirectory();
 	const pendingDir = path.join(dir, "unreleased");
 
-	await ensureDirectory(pendingDir);
+	await mkdir(dir, { recursive: true });
 
 	try {
 		await writeFile(path.join(pendingDir, `${Date.now()}.md`), contents);
