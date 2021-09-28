@@ -1,9 +1,11 @@
 import React from "react";
 import { render } from "ink-testing-library";
-import App from "./ui";
+import { App } from "./ui";
 
 it("CLI renders correctly", () => {
-	const { lastFrame } = render(<App severity="patch" />);
+	const { lastFrame } = render(
+		<App command="add" severity="patch" message="Add feature x" />
+	);
 
-	expect(lastFrame()).toEqual(`Hello, World.`);
+	expect(lastFrame()).toEqual(`File added.`);
 });
