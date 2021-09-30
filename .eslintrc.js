@@ -1,3 +1,7 @@
 module.exports = {
-	extends: ["jonhaddow", "jonhaddow/react", "jonhaddow/typescript"],
+	env: {
+		node: true,
+		es6: true,
+	},
+	extends: ["jonhaddow", "jonhaddow/react"],
 };
