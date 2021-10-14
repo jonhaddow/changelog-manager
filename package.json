@@ -18,8 +18,10 @@
 	],
 	"dependencies": {
 		"ink": "^3.0.9",
+		"js-yaml": "^4.1.0",
 		"meow": "^9.0.0",
-		"react": "^17.0.2"
+		"react": "^17.0.2",
+		"semver": "^7.3.5"
 	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.15.6",
@@ -27,7 +29,9 @@
 		"@babel/preset-typescript": "^7.15.0",
 		"@sindresorhus/tsconfig": "^2.0.0",
 		"@types/jest": "^27.0.2",
+		"@types/js-yaml": "^4.0.3",
 		"@types/react": "^17.0.24",
+		"@types/semver": "^7.3.8",
 		"@typescript-eslint/eslint-plugin": "^4.32.0",
 		"@typescript-eslint/parser": "^4.32.0",
 		"chalk": "^4.1.2",

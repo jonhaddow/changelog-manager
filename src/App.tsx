@@ -16,7 +16,7 @@ interface AppProps extends Flags {
 
 export function App({
 	command,
-	severity,
+	release,
 	message,
 	group,
 }: AppProps): React.ReactElement {
@@ -29,7 +29,7 @@ export function App({
 	}
 
 	return React.createElement<Flags>(commandMap[command], {
-		severity,
+		release,
 		message,
 		group,
 	});

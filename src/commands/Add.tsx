@@ -1,22 +1,22 @@
 import React, { ReactElement, useEffect } from "react";
 import { Box, Text } from "ink";
-import { Flags, getRootDirectory } from "../common";
+import { Flags, getEntryDirectory } from "../common";
 import { Error } from "../components";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import {
 	ADDED_NEW_ENTRY,
-	INVALID_SEVERITY,
+	INVALID_RELEASE,
 	PROCESSING_NEW_ENTRY,
 } from "../locale";
 
 function generateFileContents(
-	severity: string,
+	release: string,
 	message: string,
 	group?: string
 ): string {
-	return `# The severity of the change. \`patch\`, \`minor\`, or \`major\`.
-severity: ${severity}
+	return `# The release type for the change. \`patch\`, \`minor\`, or \`major\`.
+release: ${release}
 
 # The (optional) group this change should belong to. (e.g. \`Project A\`)
 group: ${group ?? null}
@@ -31,8 +31,7 @@ message: ${message ?? null}
  * @param contents The contents of the file.
  */
 async function addFile(contents: string): Promise<string> {
-	const dir = await getRootDirectory();
-	const pendingDir = path.join(dir, "unreleased");
+	const pendingDir = await getEntryDirectory();
 	const pendingFile = path.join(pendingDir, `${Date.now()}.yml`);
 
 	try {
@@ -45,29 +44,29 @@ async function addFile(contents: string): Promise<string> {
 	}
 }
 
-const acceptableSeverityTypes = ["patch", "minor", "major"];
+const acceptableReleaseTypes = ["patch", "minor", "major"];
 
-export function Add({ severity, message, group }: Flags): ReactElement {
+export function Add({ release, message, group }: Flags): ReactElement {
 	const [processing, setProcessing] = React.useState(true);
 	const [fileLocation, setFileLocation] = React.useState("");
 
-	const validSeverity = severity && acceptableSeverityTypes.includes(severity);
+	const validRelease = release && acceptableReleaseTypes.includes(release);
 
 	useEffect(() => {
 		async function createFile(): Promise<void> {
-			const fileContents = generateFileContents(severity, message, group);
+			const fileContents = generateFileContents(release, message, group);
 			const location = await addFile(fileContents);
 			setProcessing(false);
 			setFileLocation(location);
 		}
 
-		if (validSeverity) {
+		if (validRelease) {
 			createFile();
 		}
-	}, [group, message, severity, validSeverity]);
+	}, [group, message, release, validRelease]);
 
-	if (!validSeverity) {
-		return <Error msg={INVALID_SEVERITY} />;
+	if (!validRelease) {
+		return <Error msg={INVALID_RELEASE} />;
 	}
 
 	if (processing) {

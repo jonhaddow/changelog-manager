@@ -7,7 +7,7 @@ Commands
 	release    Creates a new release
 
 Options
-	--severity, -s    patch, minor, or major
+	--release, -r    patch, minor, or major
 	--message -m      Message describing your change
 	--group, -g       Group with other changes (optional)
 
@@ -23,8 +23,8 @@ export const UNKNOWN_COMMAND = `
 Unknown action. See \`--help\` for example use.
 `;
 
-export const INVALID_SEVERITY = `
-You need to provide a valid severity for the change. Either patch, minor or major.
+export const INVALID_RELEASE = `
+You need to provide a valid release type for the change. Either patch, minor or major.
 `;
 
 export const PROCESSING_NEW_ENTRY = `
@@ -33,4 +33,20 @@ Adding change log entry...
 
 export const ADDED_NEW_ENTRY = `
 Changelog entry added.
+`;
+
+export const PROCESSING_RELEASE = `
+Updating changelog...
+`;
+
+export const NO_ENTRIES = `
+No entries found.
+`;
+
+export const CHANGELOG_UPDATED = `
+Changelog updated.
+`;
+
+export const FAILED_TO_UPDATE_CHANGELOG = `
+Failed to update changelog.
 `;

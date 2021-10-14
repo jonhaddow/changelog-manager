@@ -1,8 +1,8 @@
-import { dirname } from "path";
+import { dirname, join } from "path";
 import { constants, promises } from "fs";
 
 export interface Flags {
-	severity?: string;
+	release?: string;
 	message?: string;
 	group?: string;
 }
@@ -16,4 +16,9 @@ export async function getRootDirectory(): Promise<string | undefined> {
 			// eslint-disable-next-line no-empty
 		} catch {}
 	}
+}
+
+export async function getEntryDirectory(): Promise<string | undefined> {
+	const dir = await getRootDirectory();
+	return join(dir, "unreleased");
 }

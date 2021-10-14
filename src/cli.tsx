@@ -6,9 +6,9 @@ import { HELP_TEXT } from "./locale";
 
 const cli = meow(HELP_TEXT, {
 	flags: {
-		severity: {
+		release: {
 			type: "string",
-			alias: "s",
+			alias: "r",
 			isRequired: false,
 		},
 		message: {
