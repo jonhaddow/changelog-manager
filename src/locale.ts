@@ -7,7 +7,7 @@ Commands
 	release    Creates a new release
 
 Options
-	--severity, -s    Patch, Minor, or Major
+	--severity, -s    patch, minor, or major
 	--message -m      Message describing your change
 	--group, -g       Group with other changes (optional)
 

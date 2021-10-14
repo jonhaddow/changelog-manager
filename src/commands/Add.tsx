@@ -15,14 +15,14 @@ function generateFileContents(
 	message: string,
 	group?: string
 ): string {
-	return `---
+	return `# The severity of the change. \`patch\`, \`minor\`, or \`major\`.
 severity: ${severity}
-group: ${group ?? null}
----
-${message ?? ""}
 
-# Here is where you can author a message to be added to the changelog.
-# Any commented lines will be omitted.
+# The (optional) group this change should belong to. (e.g. \`Project A\`)
+group: ${group ?? null}
+
+# The message describing this change.
+message: ${message ?? null}
 `;
 }
 
@@ -33,7 +33,7 @@ ${message ?? ""}
 async function addFile(contents: string): Promise<string> {
 	const dir = await getRootDirectory();
 	const pendingDir = path.join(dir, "unreleased");
-	const pendingFile = path.join(pendingDir, `${Date.now()}.md`);
+	const pendingFile = path.join(pendingDir, `${Date.now()}.yml`);
 
 	try {
 		await mkdir(pendingDir, { recursive: true });
