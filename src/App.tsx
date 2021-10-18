@@ -1,13 +1,14 @@
 import * as React from "react";
-import { Add, Release } from "./commands";
+import { Add, List, Release } from "./commands";
 import { Flags } from "./common";
 import { Text } from "ink";
 import { NO_COMMAND, UNKNOWN_COMMAND } from "./locale";
 
-type Command = "add" | "release";
+type Command = "add" | "release" | "list";
 const commandMap: { [key in Command]: (flags: Flags) => React.ReactElement } = {
 	add: Add,
 	release: Release,
+	list: List,
 };
 
 interface AppProps extends Flags {

@@ -2,8 +2,7 @@ import React, { ReactElement } from "react";
 import { Text } from "ink";
 import { Entry } from "../models";
 import { readFile, readdir, writeFile, unlink } from "fs/promises";
-import yaml from "js-yaml";
-import { getEntryDirectory, getRootDirectory } from "../common";
+import { getEntryDirectory, getRootDirectory, readEntries } from "../common";
 import path from "path";
 import {
 	CHANGELOG_UPDATED,
@@ -12,32 +11,6 @@ import {
 	PROCESSING_RELEASE,
 } from "../locale";
 import { inc } from "semver";
-
-async function readEntry(location: string): Promise<Entry> {
-	try {
-		const contents = await readFile(location, "utf8");
-		const entry = yaml.load(contents) as Entry;
-		return entry;
-	} catch (ex) {
-		console.error("Failed to read file", ex);
-	}
-}
-
-async function readEntries(): Promise<Entry[]> {
-	const pendingDir = await getEntryDirectory();
-
-	const entries: Entry[] = [];
-	try {
-		const allFiles = await readdir(pendingDir);
-		for (const file of allFiles) {
-			entries.push(await readEntry(path.join(pendingDir, file)));
-		}
-	} catch (ex) {
-		console.error("Failed to read files", ex);
-	}
-
-	return entries;
-}
 
 function getRelease(entries: Entry[]): Entry["release"] {
 	if (entries.some((x) => x.release == "major")) return "major";

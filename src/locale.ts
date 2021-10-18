@@ -5,6 +5,7 @@ $ changelog <command>
 Commands
 	add        Adds a new changelog entry
 	release    Creates a new release
+	list       Lists all pending changelog entries
 
 Options
 	--release, -r    patch, minor, or major
@@ -13,6 +14,8 @@ Options
 
 Examples
 $ changelog add -s patch -g project1 -m "Add feature x"
+$ changelog list
+$ changelog release
 `;
 
 export const NO_COMMAND = `
@@ -50,3 +53,5 @@ Changelog updated.
 export const FAILED_TO_UPDATE_CHANGELOG = `
 Failed to update changelog.
 `;
+
+export const EMPTY_MESSAGE = `<<Empty message>>`;
