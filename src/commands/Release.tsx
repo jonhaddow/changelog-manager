@@ -103,8 +103,14 @@ async function prependToChangelog(
 ): Promise<string | undefined> {
 	const root = await getRootDirectory();
 	const changelogLocation = path.join(root, "CHANGELOG.md");
+	let existingContent = "";
 	try {
-		const existingContent = await readFile(changelogLocation, "utf8");
+		existingContent = await readFile(changelogLocation, "utf8");
+	} catch (ex) {
+		// Changelog doesn't exist. Don't throw, we can create one.
+	}
+
+	try {
 		const newContent = `${content}\n\n${existingContent}`;
 		await writeFile(changelogLocation, newContent);
 	} catch (ex) {
