@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import * as React from "react";
 import { Text } from "ink";
 import { Entry } from "../models";
 import { readFile, readdir, writeFile, unlink } from "fs/promises";
@@ -8,7 +8,6 @@ import {
 	CHANGELOG_UPDATED,
 	FAILED_TO_UPDATE_CHANGELOG,
 	NO_ENTRIES,
-	PROCESSING_RELEASE,
 } from "../locale";
 import { inc } from "semver";
 
@@ -84,7 +83,7 @@ async function prependToChangelog(
 	}
 
 	try {
-		const newContent = `${content}\n\n${existingContent}`;
+		const newContent = `${content}\n${existingContent}`;
 		await writeFile(changelogLocation, newContent);
 	} catch (ex) {
 		return FAILED_TO_UPDATE_CHANGELOG;
@@ -103,16 +102,16 @@ async function deleteEntries(): Promise<void> {
 	}
 }
 
-export function Release(): ReactElement {
+export function Release(): React.ReactElement | null {
 	const [processing, setProcessing] = React.useState(true);
-	const [response, setResponse] = React.useState<string>();
+	const [error, setError] = React.useState<string>();
 
 	React.useEffect(() => {
 		async function updateChangelog(): Promise<void> {
 			const entries = await readEntries();
 
 			if (!entries.length) {
-				setResponse(NO_ENTRIES);
+				setError(NO_ENTRIES);
 			} else {
 				const release = getRelease(entries);
 				const header = await prepareHeaderLine(release);
@@ -122,10 +121,8 @@ export function Release(): ReactElement {
 				const error = await prependToChangelog(changelogUpdate);
 
 				if (error) {
-					setResponse(error);
+					setError(error);
 				} else {
-					setResponse(CHANGELOG_UPDATED);
-
 					await deleteEntries();
 				}
 			}
@@ -137,8 +134,10 @@ export function Release(): ReactElement {
 	}, []);
 
 	if (processing) {
-		return <Text>{PROCESSING_RELEASE}</Text>;
+		return null;
 	}
 
-	return <Text>{response}</Text>;
+	return (
+		<Text color={error ? "red" : "green"}>{error ?? CHANGELOG_UPDATED}</Text>
+	);
 }

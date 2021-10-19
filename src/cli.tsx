@@ -1,27 +1,36 @@
 import * as React from "react";
 import { render } from "ink";
-import meow from "meow";
-import { App } from "./App";
-import { HELP_TEXT } from "./locale";
 
-const cli = meow(HELP_TEXT, {
-	flags: {
-		release: {
-			type: "string",
-			alias: "r",
-			isRequired: false,
-		},
-		message: {
-			type: "string",
-			alias: "m",
-			isRequired: false,
-		},
-		group: {
-			type: "string",
-			alias: "g",
-			isRequired: false,
-		},
-	},
+import { Command, Option } from "commander";
+import { Add, List, Release } from "./commands";
+import { Flags } from "./common";
+
+const program = new Command("changelog-manager");
+
+const add = program.command("add");
+
+add
+	.description("Adds a pending changelog entry")
+	.addOption(
+		new Option("-t, --type <type>", "The type of the change")
+			.choices(["patch", "minor", "major"])
+			.default("patch")
+	)
+	.requiredOption("-m, --message <msg>", "The message describing the change")
+	.option("-g, --group <group>", "Group with other changes")
+	.showHelpAfterError()
+	.action((args: Flags) => {
+		render(<Add type={args.type} message={args.message} group={args.group} />);
+	});
+
+const list = program.command("list");
+list.description("Lists all pending changelog entries").action(() => {
+	render(<List />);
 });
 
-render(<App command={cli.input[0]} {...cli.flags} />);
+const release = program.command("release");
+release.description("Updates CHANGELOG.md with pending entries").action(() => {
+	render(<Release />);
+});
+
+program.parse();

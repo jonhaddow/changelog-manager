@@ -5,8 +5,8 @@ import { Entry } from "./models";
 import yaml from "js-yaml";
 
 export interface Flags {
-	release?: string;
-	message?: string;
+	type?: "patch" | "minor" | "major";
+	message: string;
 	group?: string;
 }
 

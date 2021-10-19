@@ -37,21 +37,13 @@ export function List(): React.ReactElement {
 	}
 
 	return (
-		<Box margin={2} flexDirection="column">
-			<Box
-				borderColor="cyan"
-				borderStyle="round"
-				padding={1}
-				width="50%"
-				margin={0}
-			>
-				<Text>Pending changes</Text>
-			</Box>
+		<Box marginTop={1} flexDirection="column">
+			<Text>Pending changes</Text>
 			<Box padding={1} flexDirection="column">
 				{entries.map((x, idx) => (
 					<Box key={idx}>
 						<Box marginRight={2}>
-							<Text color="gray">*</Text>
+							<Text color="gray">{idx + 1}.</Text>
 						</Box>
 						<Box marginRight={1}>
 							<Text color={releaseColorMap[x.release]}>{x.release}</Text>

@@ -1,14 +1,9 @@
-import React, { ReactElement, useEffect } from "react";
+import * as React from "react";
 import { Box, Text } from "ink";
 import { Flags, getEntryDirectory } from "../common";
-import { Error } from "../components";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
-import {
-	ADDED_NEW_ENTRY,
-	INVALID_RELEASE,
-	PROCESSING_NEW_ENTRY,
-} from "../locale";
+import { ADDED_NEW_ENTRY } from "../locale";
 
 function generateFileContents(
 	release: string,
@@ -44,15 +39,15 @@ async function addFile(contents: string): Promise<string> {
 	}
 }
 
-const acceptableReleaseTypes = ["patch", "minor", "major"];
-
-export function Add({ release, message, group }: Flags): ReactElement {
+export function Add({
+	type: release,
+	message,
+	group,
+}: Flags): React.ReactElement | null {
 	const [processing, setProcessing] = React.useState(true);
 	const [fileLocation, setFileLocation] = React.useState("");
 
-	const validRelease = release && acceptableReleaseTypes.includes(release);
-
-	useEffect(() => {
+	React.useEffect(() => {
 		async function createFile(): Promise<void> {
 			const fileContents = generateFileContents(release, message, group);
 			const location = await addFile(fileContents);
@@ -60,22 +55,16 @@ export function Add({ release, message, group }: Flags): ReactElement {
 			setFileLocation(location);
 		}
 
-		if (validRelease) {
-			createFile();
-		}
-	}, [group, message, release, validRelease]);
-
-	if (!validRelease) {
-		return <Error msg={INVALID_RELEASE} />;
-	}
+		createFile();
+	}, [group, message, release]);
 
 	if (processing) {
-		return <Text>{PROCESSING_NEW_ENTRY}</Text>;
+		return null;
 	}
 
 	return (
 		<Box justifyContent="center" flexDirection="column">
-			<Text color="green">{ADDED_NEW_ENTRY}</Text>
+			<Text color="cyan">{ADDED_NEW_ENTRY}</Text>
 			<Text color="grey">{fileLocation}</Text>
 		</Box>
 	);
