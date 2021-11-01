@@ -51,3 +51,9 @@ export async function readEntries(): Promise<Entry[]> {
 
 	return entries;
 }
+
+export function getRelease(entries: Entry[]): Entry["release"] {
+	if (entries.some((x) => x.release == "major")) return "major";
+	if (entries.some((x) => x.release == "minor")) return "minor";
+	return "patch";
+}

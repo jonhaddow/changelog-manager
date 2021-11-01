@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Text } from "ink";
-import { readEntries } from "../common";
+import { getRelease, readEntries } from "../common";
 import { Entry } from "../models";
 import { EMPTY_MESSAGE, NO_ENTRIES } from "../locale";
 
@@ -11,6 +11,8 @@ import { EMPTY_MESSAGE, NO_ENTRIES } from "../locale";
 export function List(): React.ReactElement {
 	const [entries, setEntries] = React.useState<Entry[]>([]);
 	const [processing, setProcessing] = React.useState(true);
+
+	const release = getRelease(entries);
 
 	React.useEffect(() => {
 		async function getEntries(): Promise<void> {
@@ -23,9 +25,9 @@ export function List(): React.ReactElement {
 	}, []);
 
 	const releaseColorMap: Record<Entry["release"], string> = {
-		major: "#ec407a",
-		minor: "#b39ddb",
-		patch: "#b2ebf2",
+		major: "#ff66cc",
+		minor: "#ff9933",
+		patch: "#00cc00",
 	};
 
 	if (processing) {
@@ -38,7 +40,9 @@ export function List(): React.ReactElement {
 
 	return (
 		<Box marginTop={1} flexDirection="column">
-			<Text>Pending changes</Text>
+			<Text>
+				Next release: <Text bold>{release}</Text>
+			</Text>
 			<Box padding={1} flexDirection="column">
 				{entries.map((x, idx) => (
 					<Box key={idx}>

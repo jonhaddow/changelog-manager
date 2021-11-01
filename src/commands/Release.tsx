@@ -2,19 +2,18 @@ import * as React from "react";
 import { Text } from "ink";
 import { Entry } from "../models";
 import { readFile, readdir, writeFile, unlink } from "fs/promises";
-import { getEntryDirectory, getRootDirectory, readEntries } from "../common";
+import {
+	getEntryDirectory,
+	getRelease,
+	getRootDirectory,
+	readEntries,
+} from "../common";
 import path from "path";
 import {
 	CHANGELOG_UPDATED,
 	FAILED_TO_UPDATE_CHANGELOG,
 	NO_ENTRIES,
 } from "../locale";
-
-function getRelease(entries: Entry[]): Entry["release"] {
-	if (entries.some((x) => x.release == "major")) return "major";
-	if (entries.some((x) => x.release == "minor")) return "minor";
-	return "patch";
-}
 
 function groupBy<TItem>(xs: TItem[], key: string): { [key: string]: TItem[] } {
 	return xs.reduce((rv, x) => {
