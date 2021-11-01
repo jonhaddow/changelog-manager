@@ -9,7 +9,6 @@ import {
 	FAILED_TO_UPDATE_CHANGELOG,
 	NO_ENTRIES,
 } from "../locale";
-import { inc } from "semver";
 
 function getRelease(entries: Entry[]): Entry["release"] {
 	if (entries.some((x) => x.release == "major")) return "major";
@@ -24,27 +23,11 @@ function groupBy<TItem>(xs: TItem[], key: string): { [key: string]: TItem[] } {
 	}, {});
 }
 
-async function detectCurrentSemVer(): Promise<string> {
-	const root = await getRootDirectory();
-	const pgkJson = path.join(root, "package.json");
-	try {
-		const contents = await readFile(pgkJson, "utf8");
-		const json = JSON.parse(contents) as Record<string, string>;
-		return json.version;
-	} catch (ex) {
-		console.error("Failed to read package.json");
-	}
-}
-
-async function prepareHeaderLine(release: Entry["release"]): Promise<string> {
+function prepareHeaderLine(release: Entry["release"]): string {
 	const now = new Date();
 	now.getUTCFullYear();
 
-	const getCurrentVersion = await detectCurrentSemVer();
-
-	const nextVersion = inc(getCurrentVersion, release);
-
-	return `## [${nextVersion}] - ${now.getUTCFullYear()}-${
+	return `## [${release}] - ${now.getUTCFullYear()}-${
 		now.getUTCMonth() + 1
 	}-${now.getUTCDate()}`;
 }
@@ -114,7 +97,7 @@ export function Release(): React.ReactElement | null {
 				setError(NO_ENTRIES);
 			} else {
 				const release = getRelease(entries);
-				const header = await prepareHeaderLine(release);
+				const header = prepareHeaderLine(release);
 				const changelogUpdate = `${header}\n\n${prepareContentFromEntries(
 					entries
 				)}`;
