@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Box, Text } from "ink";
-import { Flags, getEntryDirectory } from "../common";
+import { Flags } from "../common";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import { ADDED_NEW_ENTRY } from "../locale";
@@ -26,7 +26,7 @@ message: ${message ?? null}
  * @param contents The contents of the file.
  */
 async function addFile(contents: string): Promise<string> {
-	const pendingDir = await getEntryDirectory();
+	const pendingDir = process.cwd();
 	const pendingFile = path.join(pendingDir, `${Date.now()}.yml`);
 
 	try {

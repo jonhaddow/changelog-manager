@@ -1,3 +1,7 @@
+## [1.0.3] - 2021-11-11
+
+- Use process.cwd() to manipulate files
+
 ## [1.0.2] - 2021-11-11
 
 - Include shebang to entry file
