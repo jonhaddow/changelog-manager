@@ -23,7 +23,7 @@ export async function getRootDirectory(): Promise<string | undefined> {
 
 export async function getEntryDirectory(): Promise<string | undefined> {
 	const dir = await getRootDirectory();
-	return join(dir, "unreleased");
+	return join(dir, ".changelog", "unreleased");
 }
 
 async function readEntry(location: string): Promise<Entry> {
