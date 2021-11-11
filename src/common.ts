@@ -1,5 +1,4 @@
-import { dirname, join } from "path";
-import { constants, promises } from "fs";
+import { join } from "path";
 import { readdir, readFile } from "fs/promises";
 import { Entry } from "./models";
 import yaml from "js-yaml";
@@ -10,19 +9,8 @@ export interface Flags {
 	group?: string;
 }
 
-export async function getRootDirectory(): Promise<string | undefined> {
-	for (const path of module.paths) {
-		try {
-			const prospectivePkgJsonDir = dirname(path);
-			await promises.access(path, constants.F_OK);
-			return prospectivePkgJsonDir;
-			// eslint-disable-next-line no-empty
-		} catch {}
-	}
-}
-
-export async function getEntryDirectory(): Promise<string | undefined> {
-	const dir = await getRootDirectory();
+export function getEntryDirectory(): string {
+	const dir = process.cwd();
 	return join(dir, ".changelog", "unreleased");
 }
 
@@ -37,7 +25,7 @@ async function readEntry(location: string): Promise<Entry> {
 }
 
 export async function readEntries(): Promise<Entry[]> {
-	const pendingDir = await getEntryDirectory();
+	const pendingDir = getEntryDirectory();
 
 	const entries: Entry[] = [];
 	try {

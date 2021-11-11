@@ -2,12 +2,7 @@ import * as React from "react";
 import { Text } from "ink";
 import { Entry } from "../models";
 import { readFile, readdir, writeFile, unlink } from "fs/promises";
-import {
-	getEntryDirectory,
-	getRelease,
-	getRootDirectory,
-	readEntries,
-} from "../common";
+import { getEntryDirectory, getRelease, readEntries } from "../common";
 import path from "path";
 import {
 	CHANGELOG_UPDATED,
@@ -55,7 +50,7 @@ function prepareContentFromEntries(entries: Entry[]): string {
 async function prependToChangelog(
 	content: string
 ): Promise<string | undefined> {
-	const root = await getRootDirectory();
+	const root = process.cwd();
 	const changelogLocation = path.join(root, "CHANGELOG.md");
 	let existingContent = "";
 	try {
@@ -73,7 +68,7 @@ async function prependToChangelog(
 }
 
 async function deleteEntries(): Promise<void> {
-	const pendingDir = await getEntryDirectory();
+	const pendingDir = getEntryDirectory();
 	try {
 		const allFiles = await readdir(pendingDir);
 		for (const file of allFiles) {
