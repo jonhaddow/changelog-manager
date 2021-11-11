@@ -14,7 +14,7 @@
 		"test": "jest"
 	},
 	"files": [
-		"dist/cli.js"
+		"dist/*"
 	],
 	"dependencies": {
 		"commander": "^8.2.0",
