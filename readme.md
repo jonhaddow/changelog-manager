@@ -13,7 +13,7 @@ This CLI tool will allow developers to add new entries stored in separate files.
 ## Install
 
 ```bash
-$ npm install --global changelog-manager
+$ npm install --global @jonhaddow/changelog-manager
 ```
 
 ## Usage
