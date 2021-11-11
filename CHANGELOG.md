@@ -1,3 +1,7 @@
+## [1.0.4] - 2021-11-11
+
+- Ensure "Add" command uses the correct directory
+
 ## [1.0.3] - 2021-11-11
 
 - Use process.cwd() to manipulate files
